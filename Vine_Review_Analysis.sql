@@ -39,4 +39,17 @@ SELECT COUNT(review_id) AS review_ct,
 COUNT(CASE WHEN star_rating = 5 THEN review_id ELSE NULL END) AS five_star_rating,
 COUNT(CASE WHEN star_rating = 5 and vine = 'Y' THEN review_id ELSE NULL END) AS five_star_paid,
 COUNT(CASE WHEN star_rating = 5 and vine = 'N' THEN review_id ELSE NULL END) AS five_star_unpaid
-FROM vine_table;
+FROM vine_table
+WHERE total_votes >= 20
+AND CAST(helpful_votes AS FLOAT)/CAST(total_votes AS FLOAT) >=0.5;
+
+-- how many paid vines frfom clean data, and how many 5 stars 
+SELECT COUNT(*) as total_paid,
+COUNT(CASE WHEN star_rating = 5 THEN review_id ELSE NULL END) AS five_paid
+FROM paid_review;
+
+-- how many unpaid vines from the clean data, and how many 5 stars
+SELECT COUNT(*) as total_paid,
+COUNT(CASE WHEN star_rating = 5 THEN review_id ELSE NULL END) AS five_unpaid
+FROM unpaid_review;
+
